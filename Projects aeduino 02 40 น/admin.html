@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <link rel="icon" type="image/png" href="image/logo2.png">
+    <title>Marine Admin Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/admin-style.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+<body>
+
+<div class="admin-container">
+    <aside class="sidebar">
+        <div class="logo-area">
+            <img src="image/logo.png" alt="Logo">
+            <h2>⚓ ADMIN</h2>
+        </div>
+        <nav>
+            <button onclick="show('dashboard')" id="nav-dashboard" class="nav-btn active">📊 สถิติภาพรวม</button>
+            <button onclick="show('leaveRequests')" id="nav-leaveRequests" class="nav-btn">📩 คำขอลา <span id="leaveBadge" class="badge-count">0</span></button>
+            <button onclick="show('logs')" id="nav-logs" class="nav-btn">📋 บันทึกเข้าแถว</button>
+            <button onclick="show('studentManage')" id="nav-studentManage" class="nav-btn">👨‍🎓 จัดการรายชื่อ</button>
+            <button onclick="show('settings')" id="nav-settings" class="nav-btn">⚙️ ตั้งค่าระบบ</button>
+        </nav>
+    </aside>
+
+    <div class="mobile-nav">
+        <button onclick="show('dashboard')" id="m-nav-dashboard" class="m-nav-btn active">📊 <span>ภาพรวม</span></button>
+        <button onclick="show('leaveRequests')" id="m-nav-leaveRequests" class="m-nav-btn">📩 <span>คำขอลา</span></button>
+        <button onclick="show('logs')" id="m-nav-logs" class="m-nav-btn">📋 <span>บันทึก</span></button>
+        <button onclick="show('studentManage')" id="m-nav-studentManage" class="m-nav-btn">👨‍🎓 <span>รายชื่อ</span></button>
+        <button onclick="show('settings')" id="m-nav-settings" class="m-nav-btn">⚙️ <span>ตั้งค่า</span></button>
+    </div>
+
+    <main class="main">
+        <section id="dashboard" class="page active">
+            <h1>📊 สถิติวันนี้</h1>
+            <div class="year-grid" id="dashboardContent">
+                <script>
+                    for(let i=1; i<=4; i++){
+                        document.write(`
+                            <div class="year-card">
+                                <h3>ชั้นปีที่ ${i}</h3>
+                                <div class="stat-list">
+                                    <div class="stat-item"><span>✅ ปกติ</span><span id="y${i}-present" class="present">0</span></div>
+                                    <div class="stat-item"><span>⏰ สาย</span><span id="y${i}-late" class="late">0</span></div>
+                                    <div class="stat-item"><span>📩 ลา</span><span id="y${i}-leave" class="leave">0</span></div>
+                                    <div class="stat-item"><span>❌ ขาด</span><span id="y${i}-absent" class="absent">0</span></div>
+                                </div>
+                            </div>
+                        `);
+                    }
+                </script>
+            </div>
+        </section>
+
+        <section id="leaveRequests" class="page">
+            <h1>📩 คำขอลาค้างอนุมัติ</h1>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr><th>ผู้ขอลา</th><th>เหตุผล</th><th>หลักฐาน</th><th>การดำเนินการ</th></tr>
+                    </thead>
+                    <tbody id="leaveBody"></tbody>
+                </table>
+            </div>
+        </section>
+
+        <section id="logs" class="page">
+            <h1>📋 บันทึกการเข้าแถว</h1>
+            <div class="toolbar">
+                <input type="date" id="logDate" class="input-style">
+                <select id="logYear" class="input-style">
+                    <option value="ปี 1">ชั้นปีที่ 1</option>
+                    <option value="ปี 2">ชั้นปีที่ 2</option>
+                    <option value="ปี 3">ชั้นปีที่ 3</option>
+                    <option value="ปี 4">ชั้นปีที่ 4</option>
+                </select>
+                <button onclick="loadLogs()" class="btn-search">🔍 ค้นหา</button>
+            </div>
+            <div class="table-container">
+                <table>
+                    <thead><tr><th>ชื่อ-นามสกุล</th><th>เวลา</th><th>สถานะ</th><th>ระยะห่าง</th></tr></thead>
+                    <tbody id="logBody"></tbody>
+                </table>
+            </div>
+        </section>
+
+        <section id="studentManage" class="page">
+            <h1>👨‍🎓 จัดการรายชื่อนักศึกษา</h1>
+            
+            <div class="toolbar">
+                <select id="addYear" class="input-style" style="max-width: 150px;">
+                    <option value="ปี 1">ปี 1</option>
+                    <option value="ปี 2">ปี 2</option>
+                    <option value="ปี 3">ปี 3</option>
+                    <option value="ปี 4">ปี 4</option>
+                </select>
+                <input type="text" id="addName" class="input-style" placeholder="ชื่อ-นามสกุล">
+                <button onclick="addStudent()" class="btn-save" style="margin-top:0; width:auto; padding: 10px 20px;">➕ เพิ่มนักศึกษา</button>
+            </div>
+
+            <div id="studentAccordionContainer">
+            </div>
+        </section>
+
+        <section id="settings" class="page">
+            <h1>⚙️ ตั้งค่าระบบ</h1>
+            <div class="settings-card">
+                <div class="setting-row">
+                    <span>เปิดระบบเช็คชื่อ</span>
+                    <label class="switch"><input type="checkbox" id="systemToggle" checked><span class="slider"></span></label>
+                </div>
+                <button onclick="getCurrentLocation()" class="btn-gps">📍 ดึงพิกัดปัจจุบัน (จุดเช็คชื่อ)</button>
+                <div class="location-inputs">
+                    <input type="text" id="lat" class="input-style" placeholder="Latitude">
+                    <input type="text" id="lng" class="input-style" placeholder="Longitude">
+                </div>
+                <input type="number" id="radius" class="input-style" placeholder="รัศมีอนุญาต (เมตร)" value="50">
+                <div class="alert-box-group">
+                    <label class="input-label">ข้อความแจ้งเตือนเมื่ออยู่นอกพื้นที่:</label>
+                    <textarea id="alertText" class="input-style" style="height:100px;" placeholder="ต้องการบอกอะไรกับคนที่ไม่ได้อยู่ที่มอ"></textarea>
+                </div>
+                <button onclick="save()" class="btn-save">💾 บันทึกการตั้งค่า</button>
+            </div>
+        </section>
+    </main>
+</div>
+<script src="js/admin.js"></script>
+</body>
+</html>
