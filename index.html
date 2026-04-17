@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" href="image/logo2.png">
+    <title>Marine Check-in System</title>
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;600&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link rel="stylesheet" href="css/style_V2.css">
+</head>
+<body>
+
+    <div class="glass-card">
+        <div class="header">
+            <div class="logo-wrapper">
+                <img src="image/logo2.png" alt="RUTS Logo">
+            </div>
+            <h1>Marine Engineering</h1>
+            <p>ระบบเช็คชื่อเข้าแถวอัจฉริยะ</p>
+        </div>
+
+        <div class="camera-section">
+            <video id="webcam" autoplay playsinline></video>
+            <div class="scan-anim"></div>
+        </div>
+
+        <div class="input-section">
+            <select id="year">
+                <option value="">เลือกชั้นปี</option>
+                <option value="ปี 1">ชั้นปีที่ 1</option>
+                <option value="ปี 2">ชั้นปีที่ 2</option>
+                <option value="ปี 3">ชั้นปีที่ 3</option>
+                <option value="ปี 4">ชั้นปีที่ 4</option>
+            </select>
+
+            <select id="student">
+                <option value="">เลือกรายชื่อ</option>
+            </select>
+        </div>
+
+        <button id="checkBtn">
+            <span id="btnText">🚀 เช็คชื่อเข้าแถว</span>
+        </button>
+
+        <button id="leaveBtn" class="btn-leave">
+            <span>📝 แจ้งลาเข้าแถว</span>
+        </button>
+    </div>
+
+    <script src="js/script_V3.js"></script>
+</body>
+</html>
